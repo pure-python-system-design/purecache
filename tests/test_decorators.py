@@ -4,6 +4,8 @@ Follows Arrange-Act-Assert and the testing pyramid.
 Uses a fake in-memory backend to test decorator behavior without depending on LRUCache.
 """
 
+from collections.abc import Generator
+
 import pytest
 
 from purecache.decorators import cache, generate_key
@@ -32,7 +34,7 @@ class FakeBackend:
 
 
 @pytest.fixture(autouse=True)
-def clear_fake_backend_instances() -> None:
+def clear_fake_backend_instances() -> Generator[None, None, None]:
     """Reset so each test gets a clean list of created backends."""
     FakeBackend._instances.clear()
     yield
