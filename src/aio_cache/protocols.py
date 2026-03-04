@@ -1,0 +1,6 @@
+from typing import Any, Protocol
+
+
+class ICacheBackend(Protocol):
+    async def get(self, key: str) -> Any | None: ...
+    async def put(self, key: str, value: Any): ...

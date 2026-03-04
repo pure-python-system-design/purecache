@@ -1,6 +1,6 @@
-site_name: pypi-package-uv-template
+site_name: aio-cache
 site_description: Add your description here
-site_url: https://github.com/owner/pypi-package-uv-template
+site_url: https://github.com/owner/aio-cache
 
 theme:
   name: material

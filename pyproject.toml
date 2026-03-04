@@ -3,7 +3,7 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "pypi-package-uv-template"
+name = "aio-cache"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -15,6 +15,7 @@ where = ["src"]
 
 [dependency-groups]
 dev = [
+    "pytest-asyncio",
     "ruff",
     "mypy",
     "pytest",
@@ -23,6 +24,9 @@ dev = [
     "mkdocs",
     "mkdocs-material",
     "mkdocstrings[python]",
+    "pytest-xdist>=3.8.0",
+    "pytest-timeout>=2.4.0",
+    "pytest-benchmark>=5.2.3",
 ]
 
 [tool.ruff]
@@ -39,9 +43,10 @@ python_version = "3.12"
 warn_return_any = true
 warn_unused_ignores = true
 disallow_untyped_defs = false
-packages = ["src/pypi_package_uv_template"]
+packages = ["src/aio_cache"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-v"
 pythonpath = ["src"]
+asyncio_mode = "auto"

@@ -1,6 +1,6 @@
 # API Reference
 
-::: pypi_package_uv_template
+::: aio_cache
     options:
       show_root_heading: true
       members: true
