@@ -32,5 +32,3 @@ Most developers have used a cache. Few have built one.
 The gap matters. When you implement LRU from scratch, you understand *why* `OrderedDict.move_to_end()` exists. When you implement TTL, you confront the choice between lazy expiry (check on access) and eager expiry (background sweep) — and realise both are valid and serve different use cases.
 
 This project exists to close that gap, using nothing but Python's standard library and `asyncio`.
-
-**No Redis. No Memcached. No magic.**

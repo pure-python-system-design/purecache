@@ -5,10 +5,45 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "aio-cache"
 version = "0.1.0"
-description = "Add your description here"
+description = "Async-native in-memory cache with pluggable eviction backends. Pure Python, zero dependencies."
 readme = "README.md"
+license = { text = "MIT" }
 requires-python = ">=3.12"
 dependencies = []
+
+authors = [{ name = "Maksim Smirnoff", email = "smirnoffmg@gmail.com" }]
+
+keywords = [
+    "cache",
+    "lru",
+    "lfu",
+    "ttl",
+    "asyncio",
+    "async",
+    "in-memory",
+    "system-design",
+]
+
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Distributed Computing",
+    "Framework :: AsyncIO",
+    "Typing :: Typed",
+]
+
+[project.urls]
+Homepage = "https://github.com/pure-python-system-design/aio-cache"
+Documentation = "https://pure-python-system-design.github.io/aio-cache/"
+Repository = "https://github.com/pure-python-system-design/aio-cache"
+"Bug Tracker" = "https://github.com/pure-python-system-design/aio-cache/issues"
+Changelog = "https://github.com/pure-python-system-design/aio-cache/releases"
 
 [tool.setuptools.packages.find]
 where = ["src"]
