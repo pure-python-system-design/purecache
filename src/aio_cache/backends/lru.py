@@ -25,14 +25,14 @@ class LRUCache:
     async def get(self, key: str) -> Any | None:
         async with self._lock:
             if key in self.container:
-                self.container.move_to_end(key, False)
+                self.container.move_to_end(key, True)
                 return self.container.get(key)
         return None
 
     async def put(self, key: str, value: Any) -> None:
         async with self._lock:
             if (key not in self.container) and (len(self.container) == self._capacity):
-                self.container.popitem(last=True)  # remove last item
+                self.container.popitem(last=False)  # remove first item
 
             self.container[key] = value
-            self.container.move_to_end(key, False)  # move to head
+            self.container.move_to_end(key, True)  # move to tail

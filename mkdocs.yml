@@ -1,9 +1,18 @@
 site_name: aio-cache
-site_description: Add your description here
-site_url: https://github.com/owner/aio-cache
+site_url: https://pure-python-system-design.github.io/aio-cache/
+repo_url: https://github.com/pure-python-system-design/aio-cache
+repo_name: pure-python-system-design/aio-cache
 
 theme:
   name: material
+  palette:
+    scheme: slate
+    primary: teal
+    accent: amber
+  features:
+    - navigation.sections
+    - navigation.expand
+    - content.code.copy
 
 plugins:
   - search
@@ -11,9 +20,32 @@ plugins:
       handlers:
         python:
           paths: [src]
-          options:
-            show_source: true
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - admonition
+  - pymdownx.details
+  - attr_list
+  - md_in_html
+  - tables
 
 nav:
   - Home: index.md
-  - API: api.md
+  - Decorator: decorators.md
+  - Backends:
+      - LRU: lru.md
+  - Architecture: architecture.md
+  - Advanced:
+      - Cache Stampede: stampede.md
+  - API Reference: api.md

@@ -1,82 +1,145 @@
-# aio-cache
+# 🗄️ aio-cache
 
-A GitHub repository template for Python packages using [uv](https://docs.astral.sh/uv/), with ruff, mypy, pytest, pre-commit, MkDocs (API docs via mkdocstrings), GitHub Pages, and automatic PyPI release via trusted publishing.
+Async-native in-memory cache with pluggable eviction backends — pure Python 3.12+, zero dependencies.
 
-**Use this template** — click "Use this template" above to create a new repo from this template.
+Just `asyncio`, `collections.OrderedDict`, and the irrational urge to understand what happens inside the black box.
 
-### After creating your repo: replace the placeholder name
+Part of the [pure-python-system-design](https://github.com/pure-python-system-design) project.
 
-Run the Makefile with your **distribution name** (PyPI/repo, use hyphens) and **module name** (for `import` / `python -m`, use underscores):
+---
+
+## 📦 Installation
 
 ```bash
-make rename DIST_NAME=my-tool MODULE_NAME=my_tool
+pip install aio-cache
 ```
 
-Then run `uv sync`, `uv run pytest`, and `uv run ruff check .` to confirm everything works.
+Or with uv:
 
-**Manual alternative** — replace `aio-cache` and `aio_cache` everywhere:
+```bash
+uv add aio-cache
+```
 
-| Location                                 | Change                                                                            |
-| ---------------------------------------- | --------------------------------------------------------------------------------- |
-| **Rename directory**                     | `src/aio_cache/` → `src/<your_module>/` (e.g. `src/my_package/`)   |
-| [pyproject.toml](pyproject.toml)         | `name = "..."` (PyPI name); `[tool.mypy]` → `packages = ["src/<your_module>"]`    |
-| Python files in `src/`                   | Imports and any string that mentions the old name (e.g. the `print` in `main.py`) |
-| [tests/test_main.py](tests/test_main.py) | `from <your_module> import ...` and the assertion text                            |
-| [docs/api.md](docs/api.md)               | `::: <your_module>` (mkdocstrings directive)                                      |
-| [docs/index.md](docs/index.md)           | Title and `python -m <your_module>` in the usage example                          |
-| [mkdocs.yml](mkdocs.yml)                 | `site_name:` and `site_url:`                                                      |
-| This README                              | Title (above) and the `python -m` command in Usage                                |
+Python 3.12+ required.
 
-## Installation
+---
+
+## ⚡ Quick Start
+
+### Direct backend usage
+
+```python
+from aio_cache.backends.lru import LRUCache
+
+cache = LRUCache(capacity=128)
+
+await cache.put("user:42", {"name": "Alice"})
+value = await cache.get("user:42")  # {"name": "Alice"}
+value = await cache.get("missing")  # None
+```
+
+### Decorator
+
+```python
+from aio_cache.decorators import cache
+from aio_cache.backends.lru import LRUCache
+
+@cache(backend=LRUCache, capacity=128)
+async def get_user(user_id: str) -> dict:
+    return await fetch_from_db(user_id)
+
+# First call — executes get_user, caches result
+user = await get_user("42")
+
+# Second call — returns cached result, skips get_user
+user = await get_user("42")
+```
+
+Cache keys are derived automatically from the function's arguments using `pickle` + SHA-256 — positional args keep their order, keyword args are sorted by name.
+
+---
+
+## 🧠 Backends
+
+| Backend       | Eviction Policy       | Time | Memory | Best For               |
+| ------------- | --------------------- | ---- | ------ | ---------------------- |
+| `LRUCache`    | Least Recently Used   | O(1) | O(n)   | General purpose        |
+| `LFUCache`    | Least Frequently Used | O(1) | O(n)   | Skewed access patterns |
+| `TTLCache`    | Time-based expiry     | O(1) | O(n)   | Sessions, tokens       |
+| `LRUTTLCache` | LRU + TTL combined    | O(1) | O(n)   | Production default     |
+
+All backends implement the `ICacheBackend` protocol — swap them without touching your application code.
+
+---
+
+## 🔌 Framework Examples
+
+The decorator integrates naturally with any async framework:
+
+```python
+# FastAPI
+from fastapi import FastAPI
+from aio_cache.decorators import cache
+from aio_cache.backends.lru import LRUCache
+
+app = FastAPI()
+
+@app.get("/user/{user_id}")
+@cache(backend=LRUCache, capacity=512)
+async def get_user(user_id: str):
+    return await fetch_user_from_db(user_id)
+```
+
+TODO: Add more examples for aiohttp, Django, Flask, Litestar, and Sanic in [`examples/`](examples/).
+
+---
+
+## 📐 Architecture
+
+```
+cache() decorator
+  └── ICacheBackend (protocol)
+        ├── LRUCache    — OrderedDict + move_to_end
+        ├── LFUCache    — key_map + freq_map + min_freq pointer
+        ├── TTLCache    — dict + expiry timestamps
+        └── LRUTTLCache — LRU + TTL combined
+```
+
+The `cache()` decorator handles key generation and cache lookup. The backend handles storage and eviction. Swap the backend, keep everything else.
+
+---
+
+## ⚠️ Known Limitations
+
+- **Caching `None`**: The decorator uses `if cached_res is not None` as the cache-hit check. Functions that legitimately return `None` will always miss — the value won't be cached. Use a sentinel-aware backend or wrap the return value if needed.
+
+---
+
+## 📋 Requirements
+
+- Python 3.12+
+- Courage
+
+---
+
+## 🧪 Development
 
 ```bash
 uv sync
+pre-commit install
+
+uv run pytest
+uv run ruff check .
+uv run mypy src/
+uv run mkdocs serve
 ```
 
-Or with pip:
+---
 
-```bash
-pip install -e .
-```
+## 📖 Documentation
 
-Python 3.12+ is required (see [.python-version](.python-version)). uv will use it automatically.
+Full docs at **https://pure-python-system-design.github.io/aio-cache/**
 
-## Usage
+---
 
-```bash
-python -m aio_cache
-```
-
-## Development
-
-1. Install dependencies (including dev): `uv sync`
-2. Install pre-commit hooks so checks run on commit: `pre-commit install`
-3. Run checks manually:
-   - `uv run ruff check .`
-   - `uv run ruff format --check .`
-   - `uv run mypy src/`
-   - `uv run pytest`
-4. Serve docs locally: `uv run mkdocs serve`
-5. Add dependencies: `uv add <pkg>` or `uv add --group dev <pkg>`
-
-To validate the whole repo: `pre-commit run --all-files`
-
-## Documentation
-
-API documentation is built with [MkDocs](https://www.mkdocs.org/) and [mkdocstrings](https://mkdocstrings.github.io/), and deployed to **GitHub Pages** on every push to `main`.
-
-- **Local:** `uv run mkdocs serve`
-- **Online:** After enabling Pages, docs will be at `https://<owner>.github.io/<repo>/`
-
-To enable: In the repo **Settings → Pages**, set **Source** to **GitHub Actions** so Pages is served from the workflow.
-
-## Releasing
-
-Releases are published to **PyPI** automatically when you create a **GitHub Release**.
-
-1. Configure **trusted publishing** for this repo on PyPI: go to your project on [pypi.org](https://pypi.org) → **Publishing** → **Add a new pending publisher**, and add the GitHub repo with workflow name `Publish to PyPI` and the appropriate ref (e.g. `release` for tags).
-2. Create a new release (e.g. tag `v0.1.0`) and publish it; the [publish workflow](.github/workflows/publish.yml) will build and upload the package via OIDC (no API token needed).
-
-## License
-
-See [LICENSE](LICENSE) if present.
+More designs to come, if the pizza supply holds.
