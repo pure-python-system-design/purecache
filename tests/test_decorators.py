@@ -5,6 +5,7 @@ Uses a fake in-memory backend to test decorator behavior without depending on LR
 """
 
 import pytest
+
 from purecache.decorators import cache, generate_key
 
 # --- Fake backend for decorator tests ---

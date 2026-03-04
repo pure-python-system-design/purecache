@@ -6,6 +6,7 @@ Follows Arrange-Act-Assert and the testing pyramid:
 """
 
 import pytest
+
 from purecache.backends.lru import LRUCache
 
 
