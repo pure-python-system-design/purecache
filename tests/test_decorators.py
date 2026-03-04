@@ -1,12 +1,11 @@
-"""High-quality tests for aio_cache.decorators.
+"""High-quality tests for purecache.decorators.
 
 Follows Arrange-Act-Assert and the testing pyramid.
 Uses a fake in-memory backend to test decorator behavior without depending on LRUCache.
 """
 
 import pytest
-
-from aio_cache.decorators import cache, generate_key
+from purecache.decorators import cache, generate_key
 
 # --- Fake backend for decorator tests ---
 

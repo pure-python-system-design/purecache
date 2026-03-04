@@ -32,7 +32,7 @@ The standard mitigation is to hold a lock per cache key during recomputation. On
 
 ```python
 import asyncio
-from aio_cache import Cache, LRUTTLBackend
+from purecache import Cache, LRUTTLBackend
 
 cache = Cache(backend=LRUTTLBackend(capacity=1000, ttl=300))
 _locks: dict[str, asyncio.Lock] = {}
@@ -61,7 +61,7 @@ async def get_or_compute(key: str, compute) -> object:
 
 The double-check after acquiring the lock (the "check-lock-check" pattern) is essential — without it, all waiting coroutines would still recompute on lock release.
 
-## Why This Isn't Built Into aio-cache
+## Why This Isn't Built Into purecache
 
 Stampede protection requires knowledge of your *compute* function, which is application-specific. Building it into the cache layer would either force a callback-based API (`cache.get_or_set(key, compute_fn)`) or leak application concerns into the cache.
 

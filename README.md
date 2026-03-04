@@ -1,4 +1,4 @@
-# 🗄️ aio-cache
+# 🗄️ purecache
 
 Async-native in-memory cache with pluggable eviction backends — pure Python 3.12+, zero dependencies.
 
@@ -11,13 +11,13 @@ Part of the [pure-python-system-design](https://github.com/pure-python-system-de
 ## 📦 Installation
 
 ```bash
-pip install aio-cache
+pip install purecache
 ```
 
 Or with uv:
 
 ```bash
-uv add aio-cache
+uv add purecache
 ```
 
 Python 3.12+ required.
@@ -29,7 +29,7 @@ Python 3.12+ required.
 ### Direct backend usage
 
 ```python
-from aio_cache.backends.lru import LRUCache
+from purecache.backends.lru import LRUCache
 
 cache = LRUCache(capacity=128)
 
@@ -41,8 +41,8 @@ value = await cache.get("missing")  # None
 ### Decorator
 
 ```python
-from aio_cache.decorators import cache
-from aio_cache.backends.lru import LRUCache
+from purecache.decorators import cache
+from purecache.backends.lru import LRUCache
 
 @cache(backend=LRUCache, capacity=128)
 async def get_user(user_id: str) -> dict:
@@ -79,8 +79,8 @@ The decorator integrates naturally with any async framework:
 ```python
 # FastAPI
 from fastapi import FastAPI
-from aio_cache.decorators import cache
-from aio_cache.backends.lru import LRUCache
+from purecache.decorators import cache
+from purecache.backends.lru import LRUCache
 
 app = FastAPI()
 
@@ -138,7 +138,7 @@ uv run mkdocs serve
 
 ## 📖 Documentation
 
-Full docs at **https://pure-python-system-design.github.io/aio-cache/**
+Full docs at **https://pure-python-system-design.github.io/purecache/**
 
 ---
 

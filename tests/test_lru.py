@@ -6,8 +6,7 @@ Follows Arrange-Act-Assert and the testing pyramid:
 """
 
 import pytest
-
-from aio_cache.backends.lru import LRUCache
+from purecache.backends.lru import LRUCache
 
 
 @pytest.fixture

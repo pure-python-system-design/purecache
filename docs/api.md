@@ -1,6 +1,6 @@
 # API Reference
 
-::: aio_cache
+::: purecache
     options:
       show_root_heading: true
       members: true

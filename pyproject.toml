@@ -3,7 +3,7 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "aio-cache"
+name = "purecache"
 version = "0.1.0"
 description = "Async-native in-memory cache with pluggable eviction backends. Pure Python, zero dependencies."
 readme = "README.md"
@@ -39,11 +39,11 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/pure-python-system-design/aio-cache"
-Documentation = "https://pure-python-system-design.github.io/aio-cache/"
-Repository = "https://github.com/pure-python-system-design/aio-cache"
-"Bug Tracker" = "https://github.com/pure-python-system-design/aio-cache/issues"
-Changelog = "https://github.com/pure-python-system-design/aio-cache/releases"
+Homepage = "https://github.com/pure-python-system-design/purecache"
+Documentation = "https://pure-python-system-design.github.io/purecache/"
+Repository = "https://github.com/pure-python-system-design/purecache"
+"Bug Tracker" = "https://github.com/pure-python-system-design/purecache/issues"
+Changelog = "https://github.com/pure-python-system-design/purecache/releases"
 
 [tool.setuptools.packages.find]
 where = ["src"]
@@ -78,7 +78,7 @@ python_version = "3.12"
 warn_return_any = true
 warn_unused_ignores = true
 disallow_untyped_defs = false
-packages = ["src/aio_cache"]
+packages = ["src/purecache"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

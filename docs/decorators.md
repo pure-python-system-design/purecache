@@ -55,8 +55,8 @@ Two design decisions worth noting:
 ## Usage
 
 ```python
-from aio_cache.decorators import cache
-from aio_cache.backends.lru import LRUCache
+from purecache.decorators import cache
+from purecache.backends.lru import LRUCache
 
 @cache(backend=LRUCache, capacity=128)
 async def get_user(user_id: str) -> dict:
@@ -77,8 +77,8 @@ user = await get_user("99")
 The backend is injected at decoration time. Swap without touching the function:
 
 ```python
-from aio_cache.backends.lru import LRUCache
-from aio_cache.backends.ttl import TTLCache
+from purecache.backends.lru import LRUCache
+from purecache.backends.ttl import TTLCache
 
 # LRU eviction
 @cache(backend=LRUCache, capacity=256)

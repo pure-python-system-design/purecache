@@ -59,7 +59,7 @@ Note that `get` also acquires the lock — because promoting the accessed key to
 ## Usage
 
 ```python
-from aio_cache.backends.lru import LRUCache
+from purecache.backends.lru import LRUCache
 
 cache = LRUCache(capacity=3)
 
@@ -77,8 +77,8 @@ assert await cache.get("a") == 1      # still present
 ## Via Decorator
 
 ```python
-from aio_cache.decorators import cache
-from aio_cache.backends.lru import LRUCache
+from purecache.decorators import cache
+from purecache.backends.lru import LRUCache
 
 @cache(backend=LRUCache, capacity=256)
 async def fetch_user(user_id: str) -> dict:
@@ -107,4 +107,4 @@ The LRU algorithm's theoretical properties are established in:
 > IBM Systems Journal, 9(2):78–117, 1970.
 > https://dl.acm.org/doi/10.1147/sj.92.0078
 
-[View Source on GitHub](https://github.com/pure-python-system-design/aio-cache/blob/main/src/aio_cache/backends/lru.py){ .md-button }
+[View Source on GitHub](https://github.com/pure-python-system-design/purecache/blob/main/src/purecache/backends/lru.py){ .md-button }

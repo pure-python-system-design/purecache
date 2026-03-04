@@ -1,6 +1,6 @@
 # Architecture
 
-`aio-cache` follows the same **Strategy pattern** used throughout the `pure-python-system-design` project: a thin `Cache` facade manages the public API, while all storage and eviction logic lives in a pluggable `IBackend`.
+`purecache` follows the same **Strategy pattern** used throughout the `pure-python-system-design` project: a thin `Cache` facade manages the public API, while all storage and eviction logic lives in a pluggable `IBackend`.
 
 ## Component Overview
 

@@ -1,15 +1,15 @@
-# aio-cache
+# purecache
 
 Async-native in-memory cache with pluggable eviction strategies — pure Python 3.12+, zero dependencies.
 
-[View Source on GitHub](https://github.com/pure-python-system-design/aio-cache){ .md-button }
+[View Source on GitHub](https://github.com/pure-python-system-design/purecache){ .md-button }
 
 ---
 
 ## Quick Start
 
 ```python
-from aio_cache import Cache, LRUTTLBackend
+from purecache import Cache, LRUTTLBackend
 
 cache = Cache(backend=LRUTTLBackend(capacity=1000, ttl=300))
 

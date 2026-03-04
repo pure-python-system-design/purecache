@@ -1,7 +1,7 @@
-site_name: aio-cache
-site_url: https://pure-python-system-design.github.io/aio-cache/
-repo_url: https://github.com/pure-python-system-design/aio-cache
-repo_name: pure-python-system-design/aio-cache
+site_name: purecache
+site_url: https://pure-python-system-design.github.io/purecache/
+repo_url: https://github.com/pure-python-system-design/purecache
+repo_name: pure-python-system-design/purecache
 
 theme:
   name: material
