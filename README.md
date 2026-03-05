@@ -1,5 +1,10 @@
 # 🗄️ purecache
 
+[![CI](https://img.shields.io/github/actions/workflow/status/pure-python-system-design/purecache/ci.yml?branch=main&label=CI)](https://github.com/pure-python-system-design/purecache/actions/workflows/ci.yml)
+[![PyPI version](https://img.shields.io/pypi/v/purecache?color=blue)](https://pypi.org/project/purecache/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Documentation](https://img.shields.io/badge/docs-mkdocs%20material-9cf)](https://pure-python-system-design.github.io/purecache/)
+
 Async-native in-memory cache with pluggable eviction backends — pure Python 3.12+, zero dependencies.
 
 Just `asyncio`, `collections.OrderedDict`, and the irrational urge to understand what happens inside the black box.
