@@ -4,7 +4,6 @@ Based on the stack algorithm framework from:
   "Evaluation Techniques for Storage Hierarchies"
   R. L. Mattson, J. Gecsei, D. R. Slutz, I. L. Traiger
   IBM Systems Journal, 9(2):78-117, 1970
-
   https://dl.acm.org/doi/10.1147/sj.92.0078
 """
 
@@ -12,27 +11,40 @@ import asyncio
 from collections import OrderedDict
 from typing import Any
 
+from .utils import _MISSING
+
 
 class LRUCache:
-    def __init__(self, capacity: int):
+    def __init__(self, capacity: int) -> None:
+        if capacity < 1:
+            raise ValueError(f"capacity must be >= 1, got {capacity}")
         self._capacity = capacity
-        self.container: OrderedDict[str, Any] = OrderedDict()
+        self._cache: OrderedDict[str, Any] = OrderedDict()
         self._lock = asyncio.Lock()
 
-    def _is_full(self) -> bool:
-        return len(self.container) == self._capacity
+    def __len__(self) -> int:
+        # No lock — eventually consistent, safe under asyncio's cooperative scheduling
+        return len(self._cache)
 
-    async def get(self, key: str) -> Any | None:
+    async def get(self, key: str) -> Any:
+        # Fast path: unlocked read, miss returns immediately without lock overhead
+        value = self._cache.get(key, _MISSING)
+        if value is _MISSING:
+            return None
+
         async with self._lock:
-            if key in self.container:
-                self.container.move_to_end(key, True)
-                return self.container.get(key)
-        return None
+            try:
+                self._cache.move_to_end(key)  # promote to MRU position
+            except KeyError:
+                # Evicted between unlocked read and lock acquire,
+                # it's a valid race, treat as miss
+                return None
+
+        return value
 
     async def put(self, key: str, value: Any) -> None:
         async with self._lock:
-            if (key not in self.container) and (len(self.container) == self._capacity):
-                self.container.popitem(last=False)  # remove first item
-
-            self.container[key] = value
-            self.container.move_to_end(key, True)  # move to tail
+            self._cache.pop(key, None)  # remove existing entry if present
+            if len(self._cache) >= self._capacity:
+                self._cache.popitem(last=False)  # last=False evicts LRU (head)
+            self._cache[key] = value  # insert at MRU position (tail)
